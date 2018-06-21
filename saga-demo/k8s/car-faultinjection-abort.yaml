@@ -1,0 +1,22 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: car
+  namespace: servicecomb
+spec:
+  hosts:
+  - car.servicecomb.svc.cluster.local
+  http:
+  - match: # An empty match will make the injection to all requests
+    fault:
+      abort:
+        percent: 90
+        httpStatus: 500
+    route:
+    - destination:
+        host: car.servicecomb.svc.cluster.local
+        subset: car-v1
+  - route:
+    - destination:
+        host: car.servicecomb.svc.cluster.local
+        subset: car-v1
