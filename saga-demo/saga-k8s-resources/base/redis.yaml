@@ -15,36 +15,46 @@
 ## limitations under the License.
 ## ---------------------------------------------------------------------------
 
-version: '2.1'
-
-services:
-  database:
-    image: "postgres"
-    hostname: postgres
-    environment:
-      - POSTGRES_DB=saga
-      - POSTGRES_USER=saga
-      - POSTGRES_PASSWORD=password
-    healthcheck:
-        test: ["CMD-SHELL", "nc -z localhost 5432 &> /dev/null; echo $$?"]
-        interval: 30s
-        timeout: 10s
-        retries: 5
-
-  alpha:
-    image: "alpha-server:${TAG}"
-    hostname: alpha-server
-    links:
-      - "database:postgresql.servicecomb.io"
-    ports:
-      - 5005:5005
-    environment:
-      - JAVA_OPTS=-Dspring.profiles.active=prd -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005
-    healthcheck:
-        test: ["CMD-SHELL", "nc -z localhost 8080 &> /dev/null; echo $$?"]
-        interval: 30s
-        timeout: 10s
-        retries: 5
-    depends_on:
-      database:
-        condition: service_healthy
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  namespace: servicecomb
+  labels:
+    app: redis
+spec:
+  type: NodePort
+  externalIPs: ["192.168.43.71"]
+  ports:
+  - port: 6379
+    name: redis # The name cannot be 'http'
+  selector:
+    app: redis
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: redis
+  namespace: servicecomb
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: redis
+        version: v1
+    spec:
+      containers:
+      - name: redis
+        image: redis:4.0
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 6379
+        # env:
+        # - name: POSTGRES_DB
+        #   value: saga
+        # - name: POSTGRES_USER
+        #   value: saga
+        # - name: POSTGRES_PASSWORD
+        #   value: password
+---

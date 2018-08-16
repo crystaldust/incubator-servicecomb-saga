@@ -98,7 +98,7 @@ class AlphaConfig {
         eventRepository, commandRepository, timeoutRepository,
         omegaCallback, eventPollingInterval).run();
 
-    TxConsistentService consistentService = new TxConsistentService(eventRepository);
+    TxConsistentService consistentService = new TxConsistentService(eventRepository, omegaCallbacks);
 
     ServerStartable startable = buildGrpc(serverConfig, consistentService, omegaCallbacks);
     new Thread(startable::start).start();

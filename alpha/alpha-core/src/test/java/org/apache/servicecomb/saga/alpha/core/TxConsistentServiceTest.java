@@ -95,7 +95,7 @@ public class TxConsistentServiceTest {
 
   private final String compensationMethod = getClass().getCanonicalName();
 
-  private final TxConsistentService consistentService = new TxConsistentService(eventRepository);
+  private final TxConsistentService consistentService = new TxConsistentService(eventRepository, null);
   private final byte[] payloads = "yeah".getBytes();
 
   @Before

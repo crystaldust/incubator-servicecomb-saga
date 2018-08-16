@@ -27,6 +27,15 @@ spec:
         app: spring-demo-jmeter
         version: v1
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: name
+                operator: In
+                values:
+                - worker2
       containers:
       - name: spring-demo-jmeter
         image: servicecomb/jmeter:v1

@@ -27,8 +27,8 @@ spec:
   - port: 80
     targetPort: 8883
     name: http-jmeter-collector
-  # externalIPs: ["YOUR_NODE_IP"]
-  # type: NodePort
+  externalIPs: ["192.168.43.71", "192.168.43.70"]
+  type: NodePort
   selector:
     app: jmeter-collector
 ---

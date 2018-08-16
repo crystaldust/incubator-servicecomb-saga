@@ -23,9 +23,16 @@ metadata:
   labels:
     app: alphaserver
 spec:
+  type: NodePort
+  externalIPs: ["192.168.43.72"]
   ports:
   - port: 8080
-    name: alpha
+    name: alpha-server
+  - port: 8090
+    name: grpc
+  - port: 5005
+    # nodePort: 9758
+    name: remote-debug
   selector:
     app: alphaserver
 ---
@@ -37,6 +44,15 @@ metadata:
 spec:
   replicas: 1
   template:
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: name
+                operator: In
+                values: ["worker1", "worker2"]
     metadata:
       labels:
         app: alphaserver
@@ -50,5 +66,5 @@ spec:
         # - containerPort: 8080
         env:
         - name: JAVA_OPTS
-          value: -Dspring.profiles.active=prd -Dalpha.server.port=8080 -Dspring.datasource.url=jdbc:postgresql://postgresql.servicecomb:5432/saga?useSSL=false
+          value: -Dspring.profiles.active=prd -Dalpha.server.port=8080 -Dspring.datasource.url=jdbc:postgresql://postgresql.servicecomb:5432/saga?useSSL=false -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005
 ---

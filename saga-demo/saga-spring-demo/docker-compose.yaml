@@ -37,7 +37,9 @@ services:
     links:
       - "database:postgresql.servicecomb.io"
     environment:
-      - JAVA_OPTS=-Dspring.profiles.active=prd
+      - JAVA_OPTS=-Dspring.profiles.active=prd -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005
+    ports:
+      - 5005:5005
     healthcheck:
         test: ["CMD-SHELL", "nc -z localhost 8080 &> /dev/null; echo $$?"]
         interval: 30s

@@ -1,0 +1,32 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: alphaserver
+  namespace: servicecomb
+spec:
+  replicas: 1
+  template:
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: name
+                operator: In
+                values: ["worker1", "worker2"]
+    metadata:
+      labels:
+        app: alphaserver
+        version: v1
+    spec:
+      containers:
+      - name: alphaserver
+        image: servicecomb/alpha-server:0.3.0-SNAPSHOT
+        imagePullPolicy: IfNotPresent
+        # ports:
+        # - containerPort: 8080
+        env:
+        - name: JAVA_OPTS
+          value: -Dspring.profiles.active=prd -Dalpha.server.port=8080 -Dspring.datasource.url=jdbc:postgresql://postgresql.servicecomb:5432/saga?useSSL=false -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005
+---
