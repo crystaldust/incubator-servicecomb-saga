@@ -61,7 +61,7 @@ public class EventScanner implements Runnable {
 
   @Override
   public void run() {
-    pollEvents();
+//    pollEvents();
   }
 
   private void pollEvents() {

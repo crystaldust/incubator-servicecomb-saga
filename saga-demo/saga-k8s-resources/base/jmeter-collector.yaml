@@ -47,7 +47,7 @@ spec:
     spec:
       containers:
       - name: jmeter-collector
-        image: servicecomb/jmeter-collector:v1
+        image: swr.cn-north-1.myhuaweicloud.com/saga/jmeter-collector:v1
         imagePullPolicy: IfNotPresent
 ---
 

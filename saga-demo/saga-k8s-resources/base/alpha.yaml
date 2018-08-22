@@ -31,7 +31,7 @@ spec:
   - port: 8090
     name: grpc
   - port: 5005
-    # nodePort: 9758
+    nodePort: 8400
     name: remote-debug
   selector:
     app: alphaserver
@@ -45,14 +45,14 @@ spec:
   replicas: 1
   template:
     spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: name
-                operator: In
-                values: ["worker1", "worker2"]
+      # affinity:
+      #   nodeAffinity:
+      #     requiredDuringSchedulingIgnoredDuringExecution:
+      #       nodeSelectorTerms:
+      #       - matchExpressions:
+      #         - key: name
+      #           operator: In
+      #           values: ["worker1", "worker2"]
     metadata:
       labels:
         app: alphaserver
@@ -60,7 +60,9 @@ spec:
     spec:
       containers:
       - name: alphaserver
-        image: servicecomb/alpha-server:0.3.0-SNAPSHOT
+        image: alpha-server:0.3.0-SNAPSHOT
+        # image: servicecomb/alpha-server:0.3.0-SNAPSHOT
+        # image: swr.cn-north-1.myhuaweicloud.com/saga/alpha-server:debug
         imagePullPolicy: IfNotPresent
         # ports:
         # - containerPort: 8080

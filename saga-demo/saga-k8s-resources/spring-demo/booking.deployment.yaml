@@ -1,0 +1,42 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: booking
+  namespace: servicecomb
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: booking
+        version: v1
+    spec:
+      containers:
+      - name: booking
+        image: swr.cn-north-1.myhuaweicloud.com/saga/booking:0.3.0-SNAPSHOT
+        # image: servicecomb/booking:0.3.0-SNAPSHOT
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: JAVA_OPTS
+          value: -Dalpha.cluster.address=alpha-server.servicecomb:8080 -Dcar.service.address=http://car.servicecomb:8082 -Dhotel.service.address=http://hotel.servicecomb:8081
+        ports:
+        - containerPort: 8080
+---
+# Only for debugging
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: booking-nodeip
+#   namespace: servicecomb
+#   labels:
+#     app: booking
+# spec:
+#   type: NodePort
+#   ports:
+#   - port: 8080
+#     # targetPort: 8080
+#     name: http
+#   externalIPs: ['$YOUR_NODE_IP']
+#   selector:
+#     app: booking
+# ---

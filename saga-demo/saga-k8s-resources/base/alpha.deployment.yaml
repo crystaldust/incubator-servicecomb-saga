@@ -22,11 +22,14 @@ spec:
     spec:
       containers:
       - name: alphaserver
-        image: servicecomb/alpha-server:0.3.0-SNAPSHOT
+        image: alpha-server:debug
+        # image: servicecomb/alpha-server:0.3.0-SNAPSHOT
+        # image: swr.cn-north-1.myhuaweicloud.com/saga/alpha-server:debug
         imagePullPolicy: IfNotPresent
         # ports:
         # - containerPort: 8080
         env:
         - name: JAVA_OPTS
-          value: -Dspring.profiles.active=prd -Dalpha.server.port=8080 -Dspring.datasource.url=jdbc:postgresql://postgresql.servicecomb:5432/saga?useSSL=false -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005
+          value: -Dspring.profiles.active=prd -Dalpha.server.port=8080 -Dspring.datasource.url=jdbc:postgresql://postgresql.servicecomb:5432/saga?useSSL=false 
+          #-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005
 ---

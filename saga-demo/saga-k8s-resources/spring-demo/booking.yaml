@@ -45,7 +45,8 @@ spec:
     spec:
       containers:
       - name: booking
-        image: servicecomb/booking:0.3.0-SNAPSHOT
+        image: swr.cn-north-1.myhuaweicloud.com/saga/booking:0.3.0-SNAPSHOT
+        # image: servicecomb/booking:0.3.0-SNAPSHOT
         imagePullPolicy: IfNotPresent
         env:
         - name: JAVA_OPTS
